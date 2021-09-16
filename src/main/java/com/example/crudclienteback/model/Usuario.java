@@ -25,9 +25,6 @@ public class Usuario implements Serializable {
     @Column(name="cpf", nullable = false)
     private String cpf;
 
-    @Column(name = "email", nullable = false)
-    private String email;
-
     @Column(name="cep", nullable = false)
     private int cep;
 
