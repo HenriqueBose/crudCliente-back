@@ -29,16 +29,18 @@ public class UsuarioController {
 
     @RequestMapping(value = "/salvar", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public String salvarUsuario(@RequestBody Usuario usuario){
-
-        usuarioRepository.save(usuario);
-        return "Aplicação funcionando, usuario salvo com sucesso.";
+    public ResponseEntity<?> salvarUsuario(@RequestBody Usuario usuario){
+        log.info("Salvando usuario");
+        Long id = usuarioService.salvar(usuario);
+        Map<String, Object> map = new HashMap<>();
+        map.put("msg", id);
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/editar", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> editarUsuario(@RequestBody Usuario usuario){
-        log.info("Editanto usuario" + usuario.getId());
+        log.info("Editanto usuario: " + usuario.getId());
         String res = usuarioService.editar(usuario);
         Map<String, Object> map = new HashMap<>();
         map.put("msg", res);

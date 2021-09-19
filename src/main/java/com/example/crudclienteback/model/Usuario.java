@@ -1,5 +1,6 @@
 package com.example.crudclienteback.model;
 
+import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,24 +21,33 @@ public class Usuario implements Serializable {
 
 
     @Column(name = "nome", nullable = false)
+    @NotNull
     private String nome;
 
+
     @Column(name="cpf", nullable = false)
+    @NotNull
     private String cpf;
 
     @Column(name="cep", nullable = false)
+    @NotNull
     private int cep;
 
     @Column(name="logradouro", nullable = false)
+    @NotNull
     private String logradouro;
 
     @Column(name="bairro", nullable = false)
+    @NotNull
     private String bairro;
 
+
     @Column(name = "cidade", nullable = false)
+    @NotNull
     private String cidade;
 
     @Column(name = "uf", nullable = false)
+    @NotNull
     private String uf;
 
     @Column(name = "complemento")

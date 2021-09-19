@@ -21,16 +21,14 @@ public class TelefoneController {
 
     @RequestMapping(value = "/salvar", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public String salvarTelefone(@RequestBody Telefone telefone){
+    public Telefone salvarTelefone(@RequestBody Telefone telefone){
+       return telefoneService.save(telefone);
 
-        telefoneService.save(telefone);
-        return "Aplicação funcionando, telefone salvo com sucesso.";
     }
 
     @RequestMapping(value = "/find-all/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public List<Telefone> findByClienteId(@PathVariable Long id){
-
         return telefoneService.findAllByContaId(id);
     }
 }
