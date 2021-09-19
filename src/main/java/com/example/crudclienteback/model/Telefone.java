@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Getter
@@ -17,6 +19,7 @@ public class Telefone {
     private Long id;
 
     @Column(name="numero", nullable = false)
+    @NotBlank(message = "Campo telefone é obrigatório")
     private String numero;
 
     @Column(name="idCliente", nullable = false)

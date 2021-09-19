@@ -1,7 +1,6 @@
 package com.example.crudclienteback.service;
 
-
-import com.example.crudclienteback.model.Email;
+import com.example.crudclienteback.model.Emails;
 import com.example.crudclienteback.repository.EmailRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,7 @@ public class EmailService {
     private EmailRepository repository;
 
 
-    public Email save(Email email){
+    public Emails save(Emails email){
         try{
             return repository.save(email);
         }catch (RuntimeException e ) {
@@ -26,7 +25,7 @@ public class EmailService {
         }
     }
 
-    public List<Email> findAllByContaId(Long id) {
+    public List<Emails> findAllByContaId(Long id) {
         try {
             return repository.findAllByIdCliente(id);
         } catch (RuntimeException e) {

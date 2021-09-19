@@ -1,6 +1,5 @@
 package com.example.crudclienteback.service;
 
-import com.example.crudclienteback.model.Email;
 import com.example.crudclienteback.model.Telefone;
 import com.example.crudclienteback.repository.EmailRepository;
 import com.example.crudclienteback.repository.TelefoneRepository;

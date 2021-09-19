@@ -1,41 +1,32 @@
 package com.example.crudclienteback.service;
 
-import com.example.crudclienteback.model.Telefone;
 import com.example.crudclienteback.model.Usuario;
 import com.example.crudclienteback.repository.UsuarioRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 
-@Slf4j
 @Service
-public class UsuarioService {
+public class UsuarioService implements UserDetailsService {
 
     @Autowired
     private UsuarioRepository repository;
 
 
+    @Override
+    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+        Usuario usuario = repository.findByLogin(login).orElseThrow(() -> new UsernameNotFoundException("Login não encontrado."));
 
-    public String editar(Usuario usuario){
-        try{
-            repository.saveAndFlush(usuario);
-        }catch (RuntimeException e ) {
-            throw new RuntimeException(" Ocorreu um erro ao tentar editar o usuario, erro: " + e);
-        }
-        return "Edição efetuada com sucesso!";
+        return User
+                .builder()
+                .username(usuario.getLogin())
+                .password(usuario.getSenha())
+                .roles(usuario.getRole())
+                .build();
+
     }
-
-    @Transactional
-    public Long salvar(Usuario usuario){
-        try{
-            repository.save(usuario);
-        }catch (RuntimeException e ) {
-            log.info("Erro ao salvar o usuario");
-            throw new RuntimeException("Ocorreu um erro ao tentar salvar o usuario, erro: " + e);
-        }
-        return usuario.getId();
-    }
-
 }

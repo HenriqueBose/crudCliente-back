@@ -1,62 +1,41 @@
 package com.example.crudclienteback.controller;
 
-
+import com.example.crudclienteback.model.Telefone;
 import com.example.crudclienteback.model.Usuario;
 import com.example.crudclienteback.repository.UsuarioRepository;
-import com.example.crudclienteback.service.UsuarioService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
+import java.util.Optional;
 
-@Slf4j
 @RestController
-@RequestMapping("/api/clientes")
-@CrossOrigin("*")  // até encontrar um dominio fixo para a aplicação
+@CrossOrigin("*")
+@RequestMapping("/api/login")
 public class UsuarioController {
 
     @Autowired
-    private UsuarioService usuarioService;
+    private UsuarioRepository repository;
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public void salvar(@RequestBody Usuario usuario){
+        repository.save(usuario);
+    }
 
-    @RequestMapping(value = "/salvar", method = RequestMethod.POST)
+
+    @RequestMapping(value = "/find-role/{login}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> salvarUsuario(@RequestBody Usuario usuario){
-        log.info("Salvando usuario");
-        Long id = usuarioService.salvar(usuario);
+    public ResponseEntity<?> findByClienteId(@PathVariable String login){
+        Usuario usuario = repository.findByLogin(login).orElseThrow(() -> new UsernameNotFoundException("Login não encontrado."));
         Map<String, Object> map = new HashMap<>();
-        map.put("msg", id);
+        map.put("role", usuario.getRole());
         return new ResponseEntity<>(map, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/editar", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> editarUsuario(@RequestBody Usuario usuario){
-        log.info("Editanto usuario: " + usuario.getId());
-        String res = usuarioService.editar(usuario);
-        Map<String, Object> map = new HashMap<>();
-        map.put("msg", res);
-        return new ResponseEntity<>(map, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/find-all", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public List<Usuario> findAll(){
-       return usuarioRepository.findAll();
-    }
-
-    @RequestMapping(value = "/deletar/{id}", method = RequestMethod.DELETE)
-    @ResponseStatus(HttpStatus.OK)
-    public void delete(@PathVariable Long id){
-        usuarioRepository.deleteById(id);
     }
 
 }
